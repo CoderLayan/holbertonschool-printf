@@ -1,10 +1,9 @@
 #include "main.h"
 #include <stdarg.h>
-#include <unistd.h>
 
 /**
 * _printf - Produces output according to a format
-* @format: Format string containing characters and specifiers
+* @format: Format string containing the characters and specifiers
 * Return: Number of characters printed
 */
 int _printf(const char *format, ...)
@@ -13,37 +12,40 @@ int count = 0;
 va_list args;
 
 if (!format)
-return (-1);
+return (-1); /* Null format string */
 
 va_start(args, format);
 while (*format)
 {
-if (*format == '%') /* Handle format specifiers */
+if (*format == '%')
 {
 format++;
-if (*format == 'c') /* %c: Character */
+if (*format == 'c') /* Handle %c */
 {
-char c = (char)va_arg(args, int);
-count += write(1, &c, 1);
+char c = va_arg(args, int);
+count += _putchar(c);
 }
-else if (*format == 's') /* %s: String */
+else if (*format == 's') /* Handle %s */
 {
 char *str = va_arg(args, char *);
 if (!str)
 str = "(null)";
 while (*str)
-count += write(1, str++, 1);
+count += _putchar(*str++);
 }
-else if (*format == '%') /* %%: Percent */
+else if (*format == '%') /* Handle %% */
 {
-count += write(1, "%", 1);
+count += _putchar('%');
 }
-else
-return (-1); /* Invalid specifier */
-}
-else /* Handle regular characters */
+else /* Invalid specifier */
 {
-count += write(1, format, 1);
+count += _putchar('%');
+count += _putchar(*format);
+}
+}
+else /* Print regular characters */
+{
+count += _putchar(*format);
 }
 format++;
 }
