@@ -1,12 +1,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <stdarg.h>
-#include <unistd.h>
-
-int _printf(const char *format, ...);
-int _putchar(char c);
-int print_string(char *str);
-int handle_format(char format, va_list args);
+int _printf(const char *format, ...); /* Prototype for _printf */
+int _putchar(char c);                 /* Prototype for _putchar */
 
 #endif /* MAIN_H */
