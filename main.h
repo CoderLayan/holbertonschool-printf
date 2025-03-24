@@ -2,11 +2,9 @@
 #define MAIN_H
 
 #include <stdarg.h>
+#include <unistd.h>
 
-int _putchar(char c);
+/* Function prototype for _printf */
 int _printf(const char *format, ...);
-int handle_char(va_list args);
-int handle_string(va_list args);
-int handle_percent(void);
 
 #endif /* MAIN_H */

@@ -1,83 +1,88 @@
 #include "main.h"
-#include <stdarg.h>
-
 /**
-* handle_char - Handles the %c format specifier
-* @args: Argument list containing the character
-* Return: Number of characters printed
+* print_char - Prints a single character.
+* @args: The argument list containing the character.
+*
+* Return: Number of characters printed.
 */
-int handle_char(va_list args)
+int print_char(va_list args)
 {
 char c = va_arg(args, int);
-return (_putchar(c));
-}
 
+return (write(1, &c, 1));
+}
 /**
-* handle_string - Handles the %s format specifier
-* @args: Argument list containing the string
-* Return: Number of characters printed
+* print_string - Prints a string.
+* @args: The argument list containing the string.
+*
+* Return: Number of characters printed.
 */
-int handle_string(va_list args)
+int print_string(va_list args)
 {
-int count = 0;
 char *str = va_arg(args, char *);
+int count = 0;
 
 if (!str)
 str = "(null)";
 
 while (*str)
-count += _putchar(*str++);
+count += write(1, str++, 1);
 
 return (count);
 }
 
 /**
-* handle_percent - Handles the %% format specifier
-* Return: Number of characters printed
+* print_percent - Prints a literal percent sign.
+*
+* Return: Number of characters printed.
 */
-int handle_percent(void)
+int print_percent(void)
 {
-return (_putchar('%'));
+return (write(1, "%", 1));
 }
-
 /**
-* _printf - Produces output according to a format
-* @format: Format string containing specifiers
-* Return: Number of characters printed
+* _printf - Produces output according to a format.
+* @format: A character string containing directives.
+*
+* Return: Number of characters printed (excluding null byte),
+*         or -1 if an error occurs.
 */
 int _printf(const char *format, ...)
 {
-int count = 0;
 va_list args;
+int count = 0;
 
 if (!format)
-return (-1); /* Return error for NULL format */
+return (-1);
 
 va_start(args, format);
+
 while (*format)
 {
 if (*format == '%')
 {
 format++;
+if (!*format)
+return (-1);
+
 if (*format == 'c')
-count += handle_char(args);
+count += print_char(args);
 else if (*format == 's')
-count += handle_string(args);
+count += print_string(args);
 else if (*format == '%')
-count += handle_percent();
+count += print_percent();
 else
 {
-count += _putchar('%');
-count += _putchar(*format);
+count += write(1, "%", 1);
+count += write(1, format, 1);
 }
 }
 else
 {
-count += _putchar(*format);
+count += write(1, format, 1);
 }
 format++;
 }
 va_end(args);
-
 return (count);
 }
