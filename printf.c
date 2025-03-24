@@ -1,45 +1,36 @@
 #include "main.h"
-/**
-* print_char - Prints a single character.
-* @args: The argument list containing the character.
-*
-* Return: Number of characters printed.
-*/
-int print_char(va_list args)
-{
-char c = va_arg(args, int);
 
-return (write(1, &c, 1));
-}
 /**
-* print_string - Prints a string.
-* @args: The argument list containing the string.
+* print_integer - Prints an integer (handles %d and %i).
+* @args: The argument list containing the integer.
 *
 * Return: Number of characters printed.
 */
-int print_string(va_list args)
+int print_integer(va_list args)
 {
-char *str = va_arg(args, char *);
+int num = va_arg(args, int);
 int count = 0;
 
-if (!str)
-str = "(null)";
+/* Handle zero case */
+if (num == 0)
+{
+count += write(1, "0", 1);
+return (count);
+}
 
-while (*str)
-count += write(1, str++, 1);
+/* Handle negative numbers */
+if (num < 0)
+{
+count += write(1, "-", 1);
+num = -num;
+}
+
+/* Use helper function to print digits */
+count += print_number(num);
 
 return (count);
 }
 
-/**
-* print_percent - Prints a literal percent sign.
-*
-* Return: Number of characters printed.
-*/
-int print_percent(void)
-{
-return (write(1, "%", 1));
-}
 /**
 * _printf - Produces output according to a format.
 * @format: A character string containing directives.
@@ -71,6 +62,8 @@ else if (*format == 's')
 count += print_string(args);
 else if (*format == '%')
 count += print_percent();
+else if (*format == 'd' || *format == 'i') /* Handle %d and %i */
+count += print_integer(args);
 else
 {
 count += write(1, "%", 1);
@@ -83,6 +76,7 @@ count += write(1, format, 1);
 }
 format++;
 }
+
 va_end(args);
 return (count);
 }
