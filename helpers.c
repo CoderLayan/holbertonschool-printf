@@ -12,7 +12,6 @@ char c = va_arg(args, int);
 
 return (write(1, &c, 1));
 }
-
 /**
 * print_string - Prints a string.
 * @args: The argument list containing the string.
@@ -26,13 +25,10 @@ int count = 0;
 
 if (!str)
 str = "(null)";
-
 while (*str)
 count += write(1, str++, 1);
-
 return (count);
 }
-
 /**
 * print_percent - Prints a literal percent sign.
 *
